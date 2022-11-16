@@ -7,8 +7,7 @@ from flask_login import login_required,current_user
 from flask_mail import Mail
 import json
 
-with open('config.json','r') as c:
-    params = json.load(c)["params"]
+
 
 # MY db connection
 local_server= True
@@ -26,8 +25,8 @@ app.config.update(
     MAIL_SERVER='smtp.gmail.com',
     MAIL_PORT='465',
     MAIL_USE_SSL=True,
-    MAIL_USERNAME=params['gmail-user'],
-    MAIL_PASSWORD=params['gmail-password']
+    MAIL_USERNAME="add your gmail-id",
+    MAIL_PASSWORD="add your gmail-password"
 )
 mail = Mail(app)
 
@@ -91,7 +90,6 @@ class Trigr(db.Model):
 # here we will pass endpoints and run the fuction
 @app.route('/')
 def index():
-    a=params['gmail-user']
     return render_template('index.html')
     
 
