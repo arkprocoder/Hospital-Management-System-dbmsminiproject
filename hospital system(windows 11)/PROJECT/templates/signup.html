@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Signup
+{% endblock title %}
+
+{% block body %}
+<div class="container mt-3">
+
+<div class="row">
+
+
+<div class="col-md-4">
+
+</div>
+
+<div class="col-md-4 jumbotron">
+<h4 class="text-center bg-light text-dark">Sign Up Here</h4>
+<br>
+
+
+{% with messages=get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+
+<div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+    {{message}}
+
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+
+<form action="/signup" method="POST">
+
+  <div class="form-group">
+    <label for="username">UserName</label>
+    <input type="text" class="form-control" id="username" name="username" required >
+  </div>
+
+  
+ <div class="form-group">
+
+  <label for="usertype">Select UserType</label>          
+                                      
+<select class="form-control" id="usertype" name="usertype"  required>
+        <option selected>Select</option>
+        <option value="Patient">Patient</option>
+        <option value="Doctor">Doctor</option>
+      </select>
+ </div>
+
+  <div class="form-group">
+    <label for="email">Email Address</label>
+    <input type="email" class="form-control" id="email" name="email" required>
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="password" name="password" required>
+  </div>
+  
+  <button type="submit" class="btn btn-dark btn-sm btn-block">Signup</button>
+</form>
+<br>
+Already a User <a href="/login">Login</a>
+
+</div>
+
+<div class="col-md-4">
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+{% endblock body %}

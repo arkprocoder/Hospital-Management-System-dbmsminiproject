@@ -21,14 +21,14 @@ login_manager.login_view='login'
 
 # SMTP MAIL SERVER SETTINGS
 
-app.config.update(
-    MAIL_SERVER='smtp.gmail.com',
-    MAIL_PORT='465',
-    MAIL_USE_SSL=True,
-    MAIL_USERNAME="add your gmail-id",
-    MAIL_PASSWORD="add your gmail-password"
-)
-mail = Mail(app)
+# app.config.update(
+#     MAIL_SERVER='smtp.gmail.com',
+#     MAIL_PORT='465',
+#     MAIL_USE_SSL=True,
+#     MAIL_USERNAME="add your gmail-id",
+#     MAIL_PASSWORD="add your gmail-password"
+# )
+# mail = Mail(app)
 
 
 @login_manager.user_loader
@@ -125,9 +125,15 @@ def patient():
         date=request.form.get('date')
         dept=request.form.get('dept')
         number=request.form.get('number')
+        if len(number)<10 or len(number)>10:
+            flash("Please give 10 digit number")
+            return render_template('patient.html',doct=doct)
         subject="HOSPITAL MANAGEMENT SYSTEM"
-        query=db.engine.execute(f"INSERT INTO `patients` (`email`,`name`,	`gender`,`slot`,`disease`,`time`,`date`,`dept`,`number`) VALUES ('{email}','{name}','{gender}','{slot}','{disease}','{time}','{date}','{dept}','{number}')")
 
+  
+
+        query=db.engine.execute(f"INSERT INTO `patients` (`email`,`name`,	`gender`,`slot`,`disease`,`time`,`date`,`dept`,`number`) VALUES ('{email}','{name}','{gender}','{slot}','{disease}','{time}','{date}','{dept}','{number}')")
+        
 # mail starts from here
 
         # mail.send_message(subject, sender=params['gmail-user'], recipients=[email],body=f"YOUR bOOKING IS CONFIRMED THANKS FOR CHOOSING US \nYour Entered Details are :\nName: {name}\nSlot: {slot}")
@@ -167,6 +173,9 @@ def edit(pid):
         date=request.form.get('date')
         dept=request.form.get('dept')
         number=request.form.get('number')
+        if len(number)<10 or len(number)>10:
+            flash("Please give 10 digit number","warning")
+            return redirect('/bookings')
         db.engine.execute(f"UPDATE `patients` SET `email` = '{email}', `name` = '{name}', `gender` = '{gender}', `slot` = '{slot}', `disease` = '{disease}', `time` = '{time}', `date` = '{date}', `dept` = '{dept}', `number` = '{number}' WHERE `patients`.`pid` = {pid}")
         flash("Slot is Updates","success")
         return redirect('/bookings')
@@ -200,7 +209,8 @@ def signup():
         encpassword=generate_password_hash(password)
 
         new_user=db.engine.execute(f"INSERT INTO `user` (`username`,`usertype`,`email`,`password`) VALUES ('{username}','{usertype}','{email}','{encpassword}')")
-
+        # myquery=User(username=username,usertype=usertype,email=email,password=password)
+        # myquery.save()
         # this is method 2 to save data in db
         # newuser=User(username=username,email=email,password=encpassword)
         # db.session.add(newuser)
