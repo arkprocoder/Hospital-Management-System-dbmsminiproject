@@ -4,7 +4,7 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user,logout_user,login_manager,LoginManager
 from flask_login import login_required,current_user
-from flask_mail import Mail
+# from flask_mail import Mail
 import json
 
 
@@ -224,13 +224,13 @@ def signup():
         email=request.form.get('email')
         password=request.form.get('password')
         user=User.query.filter_by(email=email).first()
-        encpassword=generate_password_hash(password)
+        # encpassword=generate_password_hash(password)
         if user:
             flash("Email Already Exist","warning")
             return render_template('/signup.html')
 
         # new_user=db.engine.execute(f"INSERT INTO `user` (`username`,`usertype`,`email`,`password`) VALUES ('{username}','{usertype}','{email}','{encpassword}')")
-        myquery=User(username=username,usertype=usertype,email=email,password=encpassword)
+        myquery=User(username=username,usertype=usertype,email=email,password=password)
         db.session.add(myquery)
         db.session.commit()
         flash("Signup Succes Please Login","success")
@@ -247,7 +247,7 @@ def login():
         password=request.form.get('password')
         user=User.query.filter_by(email=email).first()
 
-        if user and check_password_hash(user.password,password):
+        if user and user.password == password:
             login_user(user)
             flash("Login Success","primary")
             return redirect(url_for('index'))
